@@ -25,6 +25,7 @@ const FORMAT_OPTIONS = [
   { value: 'currency_k', label: 'Currency compact ($1.2M)' },
   { value: 'percent', label: 'Percent (12.5%)' },
   { value: 'number', label: 'Number (1,234)' },
+  { value: 'number_1dp', label: 'Number 1dp (1.8)' },
   { value: 'months', label: 'Months (6 months)' },
   { value: 'hours', label: 'Hours (48 hours)' },
   { value: 'days', label: 'Days (30 days)' },

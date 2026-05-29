@@ -26,6 +26,8 @@
         return (Math.round(n * 10) / 10).toLocaleString() + '%';
       case 'number':
         return Math.round(n).toLocaleString();
+      case 'number_1dp':
+        return (Math.round(n * 10) / 10).toLocaleString();
       case 'months':
         var m = Math.round(n);
         return m + (m === 1 ? ' month' : ' months');

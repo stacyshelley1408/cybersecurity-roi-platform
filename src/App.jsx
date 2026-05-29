@@ -57,8 +57,8 @@ export const DEFAULT_CONFIG = {
     {
       id: 'security_breaches',
       label: 'Estimated Security Breaches / Year',
-      formula: 'Math.round(employees * 0.12 * escalation_rate / 100 * 10) / 10',
-      format: 'number',
+      formula: 'employees * 0.12 * escalation_rate / 100',
+      format: 'number_1dp',
       highlight: false,
     },
     {
