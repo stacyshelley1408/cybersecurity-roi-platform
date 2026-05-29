@@ -12,7 +12,7 @@ import CtaStep from './components/steps/CtaStep'
 export const DEFAULT_CONFIG = {
   title: 'Security ROI Calculator',
   productName: 'Our Product',
-  description: 'Quantify your total cybersecurity risk exposure across breaches, incidents, staffing, and compliance — and see how much your organization can save.',
+  description: 'Quantify your total cybersecurity risk exposure across breaches, incidents, downtime, and compliance. See how much your organization can save.',
   brand: {
     primaryColor: '#2563eb',
     accentColor: '#16a34a',
@@ -22,23 +22,23 @@ export const DEFAULT_CONFIG = {
   inputs: [
     // ── Staffing ──
     { id: 'employees', label: 'Number of Employees', type: 'range', default: 500, min: 10, max: 10000, step: 10, prefix: '', suffix: '', visible: true },
-    { id: 'avg_salary', label: 'Average FTE Salary', type: 'number', default: 124910, min: 1, max: 500000, step: 1000, prefix: '$', suffix: '', visible: true },
+    { id: 'avg_salary', label: 'Average FTE Cost', type: 'number', default: 124910, min: 1, max: 500000, step: 1000, prefix: '$', suffix: '', visible: true },
     // ── Incidents & escalation ──
-    { id: 'hours_per_incident', label: 'Avg. Hours to Resolve Incident', type: 'range', default: 6, min: 1, max: 40, step: 1, prefix: '', suffix: '', visible: true },
+    { id: 'hours_per_incident', label: 'Avg. Hours to Resolve Incident', type: 'range', default: 6, min: 1, max: 40, step: 1, prefix: '', suffix: '', visible: false },
     { id: 'escalation_rate', label: 'Incident-to-Breach Escalation Rate', type: 'number', default: 3, min: 0.1, max: 25, step: 0.5, prefix: '', suffix: '%', visible: false },
     // ── Breach cost factors ──
-    { id: 'records_at_risk', label: 'Records / Accounts at Risk', type: 'number', default: 50000, min: 100, max: 100000000, step: 1000, prefix: '', suffix: '', visible: true },
+    { id: 'records_at_risk', label: 'Records / Accounts at Risk', type: 'number', default: 50000, min: 100, max: 100000000, step: 1000, prefix: '', suffix: '', visible: false },
     { id: 'cost_per_record', label: 'Cost per Record Exposed', type: 'number', default: 60, min: 1, max: 500, step: 5, prefix: '$', suffix: '', visible: false },
-    { id: 'downtime_days', label: 'Expected Downtime (days)', type: 'range', default: 21, min: 1, max: 90, step: 1, prefix: '', suffix: '', visible: true },
-    { id: 'daily_revenue', label: 'Daily Revenue', type: 'number', default: 25000, min: 0, max: 10000000, step: 1000, prefix: '$', suffix: '', visible: true },
+    { id: 'downtime_days', label: 'Expected Downtime (days)', type: 'range', default: 21, min: 1, max: 90, step: 1, prefix: '', suffix: '', visible: false },
+    { id: 'daily_revenue', label: 'Daily Revenue', type: 'number', default: 25000, min: 0, max: 10000000, step: 1000, prefix: '$', suffix: '', visible: false },
     { id: 'ir_cost', label: 'Detection & Investigation Cost', type: 'number', default: 75000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', visible: false },
     { id: 'notification_legal_cost', label: 'Notification & Legal Cost', type: 'number', default: 50000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', visible: false },
-    { id: 'customer_base', label: 'Total Customer Count', type: 'number', default: 2000, min: 0, max: 10000000, step: 100, prefix: '', suffix: '', visible: true },
+    { id: 'customer_base', label: 'Total Customer Count', type: 'number', default: 2000, min: 0, max: 10000000, step: 100, prefix: '', suffix: '', visible: false },
     { id: 'post_breach_churn', label: 'Estimated Post-Breach Churn', type: 'number', default: 3, min: 0, max: 50, step: 1, prefix: '', suffix: '%', visible: false },
-    { id: 'customer_ltv', label: 'Avg. Customer Lifetime Value', type: 'number', default: 15000, min: 0, max: 10000000, step: 500, prefix: '$', suffix: '', visible: true },
+    { id: 'customer_ltv', label: 'Avg. Customer Lifetime Value', type: 'number', default: 15000, min: 0, max: 10000000, step: 500, prefix: '$', suffix: '', visible: false },
     // ── Compliance ──
-    { id: 'annual_audit_cost', label: 'Annual Compliance & Audit Costs', type: 'number', default: 175000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', visible: true },
-    { id: 'fine_exposure', label: 'Annual Regulatory Fine Exposure', type: 'number', default: 400000, min: 0, max: 50000000, step: 10000, prefix: '$', suffix: '', visible: true },
+    { id: 'annual_audit_cost', label: 'Annual Compliance & Audit Costs', type: 'number', default: 175000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', visible: false },
+    { id: 'fine_exposure', label: 'Annual Regulatory Fine Exposure', type: 'number', default: 400000, min: 0, max: 50000000, step: 10000, prefix: '$', suffix: '', visible: false },
     // ── Product impact (marketer-set, hidden from widget end users) ──
     { id: 'incident_reduction', label: 'Incident Reduction', type: 'number', default: 70, min: 0, max: 100, step: 5, prefix: '', suffix: '%', visible: false },
     { id: 'escalation_reduction', label: 'Escalation Rate Reduction', type: 'number', default: 50, min: 0, max: 100, step: 5, prefix: '', suffix: '%', visible: false },
