@@ -15,7 +15,7 @@ export default function LivePreview({ config }) {
       setScript(cachedScript)
       return
     }
-    fetch('/roi-widget.js')
+    fetch(import.meta.env.BASE_URL + 'roi-widget.js')
       .then(r => r.text())
       .then(text => {
         cachedScript = text
