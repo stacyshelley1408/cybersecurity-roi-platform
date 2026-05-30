@@ -5,7 +5,7 @@ export default function EmbedCode({ config }) {
   const [copied, setCopied] = useState(false)
 
   const b64 = encodeConfig(config)
-  const scriptTag = `<script\n  data-roi-calc\n  data-config="${b64}"\n  src="https://YOUR-DOMAIN/roi-widget.js">\n<\/script>`
+  const scriptTag = `<script\n  data-roi-calc\n  data-config="${b64}"\n  src="https://stacyshelley.com/roi-calculator-app/roi-widget.js">\n<\/script>`
 
   function handleCopy() {
     navigator.clipboard.writeText(scriptTag).then(() => {
@@ -22,11 +22,7 @@ export default function EmbedCode({ config }) {
       <h3>Embed Tag</h3>
 
       <div className="embed-note">
-        Copy this tag and paste it anywhere on your page where you want the calculator to appear. Host{' '}
-        <code style={{ fontSize: '.72rem', background: '#dcfce7', padding: '1px 4px', borderRadius: 3 }}>
-          roi-widget.js
-        </code>{' '}
-        on your CDN or server and replace <strong>YOUR-DOMAIN</strong>.
+        Copy this tag and paste it anywhere on your page. The <code style={{ fontSize: '.72rem', background: '#dcfce7', padding: '1px 4px', borderRadius: 3 }}>src</code> points to a hosted copy of the widget file so you can test immediately — but for production, download <code style={{ fontSize: '.72rem', background: '#dcfce7', padding: '1px 4px', borderRadius: 3 }}>roi-widget.js</code> and host it yourself so your embed doesn't depend on this site.
       </div>
 
       <div className="embed-code-wrap">
@@ -41,7 +37,7 @@ export default function EmbedCode({ config }) {
           {'\n  '}
           <span className="syn-attr">src</span>
           {'='}
-          <span className="syn-val">&quot;https://YOUR-DOMAIN/roi-widget.js&quot;</span>
+          <span className="syn-val">&quot;https://stacyshelley.com/roi-calculator-app/roi-widget.js&quot;</span>
           <span className="syn-tag">{'>'}</span>
           {'\n'}
           <span className="syn-tag">{'</script>'}</span>

@@ -55,12 +55,11 @@
     }
   }
 
-  function esc(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+  function safeUrl(url) {
+    try {
+      var p = new URL(url).protocol;
+      return (p === 'http:' || p === 'https:') ? url : '#';
+    } catch (_) { return '#'; }
   }
 
   function numDisplay(n) {
@@ -93,7 +92,8 @@
       '#' + uid + ' .rc-affix{padding:0 10px;color:#6b7280;font-size:.9rem;white-space:nowrap;pointer-events:none;font-weight:300}',
       '#' + uid + ' .rc-wrap input[type=number]{flex:1;border:none;padding:10px 8px;font-size:1rem;background:transparent;outline:none;color:#0d1117;width:0;font-weight:300}',
       '#' + uid + ' .rc-wrap input[type=range]{flex:1;margin:0 8px;padding:8px 0;accent-color:' + primary + ';cursor:pointer;background:transparent;border:none;outline:none}',
-      '#' + uid + ' .rc-rval{min-width:64px;text-align:right;padding-right:12px;font-weight:500;color:' + primary + ';font-size:.9rem;white-space:nowrap}',
+      '#' + uid + ' .rc-rval{display:block;width:100%;margin-top:8px;padding:8px 12px;font-size:.95rem;font-weight:300;color:#0d1117;border:1px solid #ccdeda;background:#fff;outline:none;font-family:inherit;cursor:text}',
+      '#' + uid + ' .rc-rval:focus{border-color:' + primary + ';box-shadow:0 0 0 2px ' + primary + '1a}',
       '#' + uid + ' .rc-outputs{display:grid;gap:10px;margin-bottom:28px}',
       '#' + uid + ' .rc-out{background:#fff;border:1px solid #ccdeda;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}',
       '#' + uid + ' .rc-out.hl{background:#eaf1f0;border-color:' + primary + '55;border-left:3px solid ' + primary + '}',
@@ -139,10 +139,10 @@
     card.className = 'rc-card';
     root.appendChild(card);
 
-    if (brand.logoUrl) {
+    if (brand.logoUrl && safeUrl(brand.logoUrl) !== '#') {
       var logo = document.createElement('img');
       logo.className = 'rc-logo';
-      logo.src = brand.logoUrl;
+      logo.src = safeUrl(brand.logoUrl);
       logo.alt = '';
       card.appendChild(logo);
     }
@@ -201,11 +201,24 @@
         wrap.appendChild(input);
 
         if (isRange) {
-          var rval = document.createElement('span');
+          var rval = document.createElement('input');
+          rval.type = 'number';
           rval.className = 'rc-rval';
           rval.dataset.rid = inp.id;
-          rval.textContent = numDisplay(state[inp.id]);
-          wrap.appendChild(rval);
+          rval.value = state[inp.id];
+          rval.min = inp.min != null ? inp.min : 0;
+          if (inp.max != null) rval.max = inp.max;
+          rval.step = inp.step != null ? inp.step : 1;
+          rval.addEventListener('input', function () {
+            var v = Math.max(
+              inp.min != null ? Number(inp.min) : 0,
+              Math.min(inp.max != null ? Number(inp.max) : Infinity, parseFloat(this.value) || 0)
+            );
+            state[inp.id] = v;
+            input.value = v;
+            updateOutputs();
+          });
+          field.appendChild(rval);
         } else if (inp.suffix) {
           var suf = document.createElement('span');
           suf.className = 'rc-affix';
@@ -214,10 +227,14 @@
         }
 
         input.addEventListener('input', function () {
-          state[inp.id] = parseFloat(this.value) || 0;
+          var raw = parseFloat(this.value) || 0;
+          state[inp.id] = Math.max(
+            inp.min != null ? Number(inp.min) : -Infinity,
+            Math.min(inp.max != null ? Number(inp.max) : Infinity, raw)
+          );
           if (isRange) {
             var rv = root.querySelector('[data-rid="' + inp.id + '"]');
-            if (rv) rv.textContent = numDisplay(state[inp.id]);
+            if (rv) rv.value = state[inp.id];
           }
           updateOutputs();
         });
@@ -256,7 +273,7 @@
     if (config.cta && config.cta.text) {
       var cta = document.createElement('a');
       cta.className = 'rc-cta';
-      cta.href = config.cta.url || '#';
+      cta.href = safeUrl(config.cta.url || '');
       cta.target = '_blank';
       cta.rel = 'noopener noreferrer';
       cta.textContent = config.cta.text;
