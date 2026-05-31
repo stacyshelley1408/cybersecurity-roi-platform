@@ -1,6 +1,6 @@
 # Security ROI Calculator Builder
 
-A no-code tool for cybersecurity marketers to build and embed interactive ROI calculators — without a developer.
+A no-code tool for cybersecurity marketers to build and embed interactive ROI calculators.
 
 Configure inputs, formulas, and branding through a visual 5-step interface. Copy a single `<script>` tag to embed the result anywhere on your site. No server required.
 
