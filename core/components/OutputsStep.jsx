@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { slugify } from '../utils.js'
+import { slugify, getFlatInputs } from '../utils.js'
 
 function newOutput() {
   return { id: '', label: '', formula: '', format: 'currency', highlight: false }
@@ -147,7 +147,7 @@ function OutputForm({ output, inputIds, onSave, onCancel }) {
 export default function OutputsStep({ config, setOutputs }) {
   const [expandedIdx, setExpandedIdx] = useState(null)
   const [addingNew, setAddingNew] = useState(false)
-  const inputIds = config.inputs.map(i => i.id)
+  const inputIds = getFlatInputs(config).map(i => i.id)
 
   function handleDelete(idx) {
     setOutputs(config.outputs.filter((_, i) => i !== idx))

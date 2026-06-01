@@ -5,7 +5,7 @@ import InfoStep from '@core/components/InfoStep'
 import BrandingStep from '@core/components/BrandingStep'
 import OutputsStep from '@core/components/OutputsStep'
 import SessionFlow from './components/steps/SessionFlow'
-import SessionSetup from './components/steps/SessionSetup'
+import LeaveBehind from './components/steps/LeaveBehind'
 import { encodeConfig } from '@core/encodeConfig'
 
 export const DEFAULT_CONFIG = {
@@ -22,6 +22,7 @@ export const DEFAULT_CONFIG = {
     {
       id: 'company_profile',
       label: 'Company Profile',
+      description: 'Start with the basics. These numbers set the scale of the model — confirm them with the prospect before moving on.',
       inputs: [
         { id: 'employees', label: 'Number of Employees', type: 'range', default: 500, min: 10, max: 100000, step: 100, prefix: '', suffix: '', sellerAccess: 'prospect' },
         { id: 'avg_salary', label: 'Average FTE Cost', type: 'number', default: 124910, min: 1, max: 500000, step: 1000, prefix: '$', suffix: '', sellerAccess: 'prospect' },
@@ -32,6 +33,7 @@ export const DEFAULT_CONFIG = {
     {
       id: 'security_posture',
       label: 'Security Posture',
+      description: 'Understand their current incident volume and how they respond. Let the prospect anchor the top number — your team fills in the rest.',
       inputs: [
         { id: 'records_at_risk', label: 'Records / Accounts at Risk', type: 'number', default: 50000, min: 100, max: 100000000, step: 1000, prefix: '', suffix: '', sellerAccess: 'prospect' },
         { id: 'hours_per_incident', label: 'Avg. Hours to Resolve Incident', type: 'range', default: 6, min: 1, max: 40, step: 1, prefix: '', suffix: '', sellerAccess: 'se' },
@@ -42,6 +44,7 @@ export const DEFAULT_CONFIG = {
     {
       id: 'financial_exposure',
       label: 'Financial Exposure',
+      description: 'Translate risk into dollar terms. Use industry benchmarks as a starting point — adjust if the prospect has their own data.',
       inputs: [
         { id: 'cost_per_record', label: 'Cost per Record Exposed', type: 'number', default: 60, min: 1, max: 500, step: 5, prefix: '$', suffix: '', sellerAccess: 'se' },
         { id: 'ir_cost', label: 'Detection & Investigation Cost', type: 'number', default: 75000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', sellerAccess: 'se' },
@@ -55,6 +58,7 @@ export const DEFAULT_CONFIG = {
     {
       id: 'product_impact',
       label: 'Product Impact',
+      description: 'Reduction rates baked into the model based on customer outcomes. These are locked and not shown to the prospect.',
       inputs: [
         { id: 'incident_reduction', label: 'Incident Reduction', type: 'number', default: 70, min: 0, max: 100, step: 5, prefix: '', suffix: '%', sellerAccess: 'locked' },
         { id: 'escalation_reduction', label: 'Escalation Rate Reduction', type: 'number', default: 50, min: 0, max: 100, step: 5, prefix: '', suffix: '%', sellerAccess: 'locked' },
@@ -71,9 +75,10 @@ export const DEFAULT_CONFIG = {
     { id: 'exposure_with', label: 'Risk Exposure With {productName}', formula: '((Math.sqrt(employees * Math.min(employees, 500)) * 0.12) * (1 - incident_reduction/100) * escalation_rate * Math.pow(1000 / Math.max(employees, 1000), 0.2) * (1 - escalation_reduction/100) / 100) * Math.sqrt(employees / 10000) * (records_at_risk * cost_per_record + downtime_days * (1 - downtime_reduction/100) * daily_revenue + ir_cost + notification_legal_cost + customer_base * (post_breach_churn / 100) * customer_ltv) + (Math.sqrt(employees * Math.min(employees, 500)) * 0.12) * (1 - incident_reduction/100) * hours_per_incident * (avg_salary / 2080) + Math.pow(employees, 0.65) * avg_salary * 0.05 + (annual_audit_cost + fine_exposure * 0.15) * (1 - compliance_reduction/100)', format: 'currency', highlight: false },
     { id: 'risk_reduction', label: 'Quantified Risk Reduction', formula: '(((Math.sqrt(employees * Math.min(employees, 500)) * 0.12) * escalation_rate * Math.pow(1000 / Math.max(employees, 1000), 0.2) / 100) * Math.sqrt(employees / 10000) * (records_at_risk * cost_per_record + downtime_days * daily_revenue + ir_cost + notification_legal_cost + customer_base * (post_breach_churn / 100) * customer_ltv) + (Math.sqrt(employees * Math.min(employees, 500)) * 0.12) * hours_per_incident * (avg_salary / 2080) + Math.pow(employees, 0.65) * avg_salary * 0.05 + annual_audit_cost + fine_exposure * 0.15) - (((Math.sqrt(employees * Math.min(employees, 500)) * 0.12) * (1 - incident_reduction/100) * escalation_rate * Math.pow(1000 / Math.max(employees, 1000), 0.2) * (1 - escalation_reduction/100) / 100) * Math.sqrt(employees / 10000) * (records_at_risk * cost_per_record + downtime_days * (1 - downtime_reduction/100) * daily_revenue + ir_cost + notification_legal_cost + customer_base * (post_breach_churn / 100) * customer_ltv) + (Math.sqrt(employees * Math.min(employees, 500)) * 0.12) * (1 - incident_reduction/100) * hours_per_incident * (avg_salary / 2080) + Math.pow(employees, 0.65) * avg_salary * 0.05 + (annual_audit_cost + fine_exposure * 0.15) * (1 - compliance_reduction/100))', format: 'currency', highlight: true },
   ],
-  cta: {
-    text: 'Get Your Free Security Assessment',
-    url: 'https://example.com/demo',
+  leaveBehind: {
+    showInputs: true,
+    introLine: "Based on your profile, here's what {productName} can do for your organization.",
+    nextSteps: "Schedule a technical deep-dive with our solutions team to walk through implementation and answer your questions.",
   },
 }
 
@@ -99,6 +104,14 @@ export default function App() {
     return DEFAULT_CONFIG
   })
   const [step, setStep] = useState('info')
+  const [copied, setCopied] = useState(false)
+
+  function copySessionUrl() {
+    navigator.clipboard.writeText(sessionUrl).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
 
   useEffect(() => {
     try { localStorage.setItem(LS_KEY, JSON.stringify(config)) } catch {}
@@ -120,6 +133,12 @@ export default function App() {
     setConfig(c => ({ ...c, outputs }))
   }
 
+  function resetToDefaults() {
+    if (window.confirm('Reset everything to defaults? This cannot be undone.')) {
+      setConfig(DEFAULT_CONFIG)
+    }
+  }
+
   const sessionUrl = SELLER_TOOL_BASE + '#config/' + encodeConfig(config)
   const stepProps = { config, update, updateBrand, setInputGroups, setOutputs, sessionUrl }
 
@@ -132,6 +151,10 @@ export default function App() {
         </div>
         <div className="app-header-badge">Beta</div>
         <div className="app-header-spacer" />
+        <button className="reset-btn" onClick={resetToDefaults}>Reset</button>
+        <button className="copy-url-btn" onClick={copySessionUrl}>
+          {copied ? 'Copied!' : 'Copy URL'}
+        </button>
         <a
           className="preview-session-btn"
           href={sessionUrl}
@@ -150,7 +173,7 @@ export default function App() {
           {step === 'branding'    && <BrandingStep {...stepProps} />}
           {step === 'outputs'     && <OutputsStep {...stepProps} />}
           {step === 'flow'        && <SessionFlow {...stepProps} />}
-          {step === 'leavebehind' && <SessionSetup {...stepProps} />}
+          {step === 'leavebehind' && <LeaveBehind {...stepProps} />}
         </main>
       </div>
     </div>

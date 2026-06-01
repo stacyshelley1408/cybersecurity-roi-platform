@@ -45,10 +45,7 @@ export default function App() {
     <div className="empty-state">
       <div className="empty-card">
         <h1>Security ROI Seller Tool</h1>
-        <p>Open this tool from the ROI Calculator Builder to load a template.</p>
-        <p className="empty-hint">
-          In the builder, go to the <strong>Embed Code</strong> tab and copy the Seller Tool link.
-        </p>
+        <p>Open this tool from the ROI Calculator Builder for Sales using the <strong>Preview Session</strong> or <strong>Copy URL</strong> button.</p>
       </div>
     </div>
   )

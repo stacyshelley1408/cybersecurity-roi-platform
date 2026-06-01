@@ -84,6 +84,14 @@ export default function SummaryView({ state, onEdit }) {
           </div>
         </header>
 
+        {config.leaveBehind?.introLine && (
+          <div className="summary-intro">
+            {config.leaveBehind.introLine
+              .replace(/\{productName\}/g, productName)
+              .replace(/\{company\}/g, company)}
+          </div>
+        )}
+
         <section className="summary-outputs">
           {outputs.map(out => {
             const val = evalFormula(out.formula, inputValues)
@@ -102,13 +110,7 @@ export default function SummaryView({ state, onEdit }) {
           })}
         </section>
 
-        {config.description && (
-          <section className="summary-description">
-            <p>{config.description}</p>
-          </section>
-        )}
-
-        <section className="summary-assumptions">
+        {config.leaveBehind?.showInputs !== false && <section className="summary-assumptions">
           <h3 className="summary-section-heading">Model Inputs</h3>
           {config.inputGroups ? (
             config.inputGroups.map(group => {
@@ -150,24 +152,29 @@ export default function SummaryView({ state, onEdit }) {
               })}
             </div>
           )}
-        </section>
+        </section>}
+
+        {config.leaveBehind?.nextSteps && (
+          <section className="summary-next-steps">
+            <h3 className="summary-section-heading">Next Steps</h3>
+            <p>{config.leaveBehind.nextSteps}</p>
+          </section>
+        )}
 
         <footer className="summary-footer">
-          <div className="summary-footer-left">
-            {prospect.sellerName && (
-              <span>Prepared by <strong>{prospect.sellerName}</strong></span>
+          <div className="summary-contact">
+            {prospect.sellerName && <div className="summary-contact-name">{prospect.sellerName}</div>}
+            {prospect.sellerEmail && (
+              <a href={`mailto:${prospect.sellerEmail}`} className="summary-contact-detail">
+                {prospect.sellerEmail}
+              </a>
+            )}
+            {prospect.sellerPhone && (
+              <div className="summary-contact-detail">{prospect.sellerPhone}</div>
             )}
           </div>
-          {config.cta?.text && config.cta?.url && (
-            <a
-              className="summary-cta"
-              href={config.cta.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ background: primary }}
-            >
-              {config.cta.text}
-            </a>
+          {config.brand?.logoUrl && (
+            <img src={config.brand.logoUrl} alt={productName} className="summary-footer-logo" />
           )}
         </footer>
       </div>

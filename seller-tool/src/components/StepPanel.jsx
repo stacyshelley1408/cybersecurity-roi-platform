@@ -35,6 +35,28 @@ function ProfileFields({ prospect, onProspectChange }) {
           />
         </div>
       </div>
+      <div className="field-row">
+        <div className="field-group">
+          <label className="field-label">Your Email</label>
+          <input
+            className="text-input"
+            type="email"
+            placeholder="you@company.com"
+            value={prospect.sellerEmail || ''}
+            onChange={e => onProspectChange({ sellerEmail: e.target.value })}
+          />
+        </div>
+        <div className="field-group">
+          <label className="field-label">Your Phone</label>
+          <input
+            className="text-input"
+            type="tel"
+            placeholder="+1 (555) 000-0000"
+            value={prospect.sellerPhone || ''}
+            onChange={e => onProspectChange({ sellerPhone: e.target.value })}
+          />
+        </div>
+      </div>
     </div>
   )
 }
@@ -55,7 +77,7 @@ function GroupFields({ group, inputValues, onInputChange, primary }) {
         />
       ))}
 
-      {seInputs.length > 0 && (
+      {seInputs.length > 0 && prospectInputs.length > 0 && (
         <>
           <div className="step-assumptions-divider">
             <span>Team Assumptions</span>
@@ -77,7 +99,7 @@ function GroupFields({ group, inputValues, onInputChange, primary }) {
 
 export default function StepPanel({
   steps, activeStep, onStepChange,
-  prospect, inputValues, onProspectChange, onInputChange, primary,
+  prospect, inputValues, onProspectChange, onInputChange, primary, onLeaveBehind,
 }) {
   const step = steps[activeStep]
   const isFirst = activeStep === 0
@@ -108,6 +130,9 @@ export default function StepPanel({
       </div>
 
       <div className="step-panel-content">
+        {!step.isProfile && step.description && (
+          <p className="step-description">{step.description}</p>
+        )}
         {step.isProfile ? (
           <ProfileFields prospect={prospect} onProspectChange={onProspectChange} />
         ) : (
@@ -129,7 +154,13 @@ export default function StepPanel({
           ← Previous
         </button>
         {isLast ? (
-          <span className="step-nav-done">All steps complete</span>
+          <button
+            className="step-nav-btn step-nav-next"
+            style={{ background: primary }}
+            onClick={onLeaveBehind}
+          >
+            Build Leave-Behind →
+          </button>
         ) : (
           <button
             className="step-nav-btn step-nav-next"

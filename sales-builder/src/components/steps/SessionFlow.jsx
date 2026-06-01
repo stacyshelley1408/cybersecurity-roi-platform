@@ -96,6 +96,10 @@ export default function SessionFlow({ config, setInputGroups }) {
     setInputGroups(groups.map((g, i) => i === gIdx ? { ...g, label } : g))
   }
 
+  function updateGroupDescription(gIdx, description) {
+    setInputGroups(groups.map((g, i) => i === gIdx ? { ...g, description } : g))
+  }
+
   function deleteGroup(gIdx) {
     setInputGroups(groups.filter((_, i) => i !== gIdx))
     setExpandedInput(null)
@@ -220,6 +224,13 @@ export default function SessionFlow({ config, setInputGroups }) {
               <button className="icon-btn danger" title="Delete group" onClick={() => deleteGroup(gIdx)}>✕</button>
             </div>
           </div>
+          <textarea
+            className="group-desc-input"
+            value={group.description || ''}
+            onChange={e => updateGroupDescription(gIdx, e.target.value)}
+            placeholder="Talking points or context for this step — shown to the seller during the session walkthrough."
+            rows={2}
+          />
 
           <div className="group-inputs">
             {group.inputs.length === 0 && addingToGroup !== gIdx && (

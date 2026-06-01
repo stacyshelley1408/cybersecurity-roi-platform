@@ -46,6 +46,8 @@ export function defaultProspect() {
     companyName: '',
     contactName: '',
     sellerName: '',
+    sellerEmail: '',
+    sellerPhone: '',
     date: new Date().toISOString().slice(0, 10),
     inputValues: {},
   }

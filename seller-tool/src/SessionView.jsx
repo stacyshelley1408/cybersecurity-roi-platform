@@ -5,7 +5,7 @@ import AssumptionsPanel from './components/AssumptionsPanel.jsx'
 import StepPanel from './components/StepPanel.jsx'
 import OutputPanel from './components/OutputPanel.jsx'
 
-export default function SessionView({ state, onChange, onBuildLeaveHehind }) {
+export default function SessionView({ state, onChange, onBuildLeaveHehind: onBuildLeaveBehind }) {
   const { config, prospect } = state
   const [assumptionsOpen, setAssumptionsOpen] = useState(false)
   const [activeStep, setActiveStep] = useState(0)
@@ -62,7 +62,7 @@ export default function SessionView({ state, onChange, onBuildLeaveHehind }) {
           <button
             className="btn-leave-behind"
             style={{ background: primary }}
-            onClick={() => onBuildLeaveHehind(state)}
+            onClick={() => onBuildLeaveBehind(state)}
           >
             Build Leave-Behind
           </button>
@@ -81,6 +81,7 @@ export default function SessionView({ state, onChange, onBuildLeaveHehind }) {
               onProspectChange={updateProspect}
               onInputChange={setInputValue}
               primary={primary}
+              onLeaveBehind={() => onBuildLeaveBehind(state)}
             />
           ) : (
             <>
