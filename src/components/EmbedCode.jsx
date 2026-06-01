@@ -2,8 +2,11 @@ import { useState, useEffect, useRef } from 'react'
 import { encodeConfig, decodeConfig } from '../encodeConfig'
 import { slugify } from '../utils'
 
+const SELLER_TOOL_BASE = 'https://stacyshelley.com/seller-tool/'
+
 export default function EmbedCode({ config, loadConfig }) {
   const [copied, setCopied] = useState(false)
+  const [copiedSeller, setCopiedSeller] = useState(false)
   const [importText, setImportText] = useState('')
   const [importError, setImportError] = useState('')
   const [importSuccess, setImportSuccess] = useState(false)
@@ -13,6 +16,7 @@ export default function EmbedCode({ config, loadConfig }) {
 
   const b64 = encodeConfig(config)
   const scriptTag = `<script\n  data-roi-calc\n  data-config="${b64}"\n  src="https://stacyshelley.com/roi-calculator-app/roi-widget.js">\n<\/script>`
+  const sellerUrl = `${SELLER_TOOL_BASE}#config/${b64}`
 
   function handleImport() {
     setImportError('')
@@ -45,6 +49,13 @@ export default function EmbedCode({ config, loadConfig }) {
     navigator.clipboard.writeText(scriptTag).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  function handleCopySeller() {
+    navigator.clipboard.writeText(sellerUrl).then(() => {
+      setCopiedSeller(true)
+      setTimeout(() => setCopiedSeller(false), 2000)
     })
   }
 
@@ -81,6 +92,24 @@ export default function EmbedCode({ config, loadConfig }) {
           onClick={handleCopy}
         >
           {copied ? '✓ Copied' : 'Copy'}
+        </button>
+      </div>
+
+      <h3 style={{ marginTop: 24 }}>Seller Tool Link</h3>
+
+      <div className="embed-note">
+        Share this link with your sales team. It opens the <strong>Seller Tool</strong> — a live prospect-facing session where sellers can enter company data and generate a leave-behind in one click.
+      </div>
+
+      <div className="embed-code-wrap" style={{ alignItems: 'center' }}>
+        <pre style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap', fontSize: '.72rem' }}>
+          {sellerUrl}
+        </pre>
+        <button
+          className={`embed-copy-btn${copiedSeller ? ' copied' : ''}`}
+          onClick={handleCopySeller}
+        >
+          {copiedSeller ? '✓ Copied' : 'Copy'}
         </button>
       </div>
 
