@@ -5,6 +5,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   base: '/seller-tool/',
+  server: { port: 5180 },
   resolve: {
     alias: {
       '@core': path.resolve(__dirname, '../core'),

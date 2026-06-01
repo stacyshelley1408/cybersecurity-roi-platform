@@ -2,14 +2,17 @@ import { useState, useCallback } from 'react'
 import { getFlatInputs } from '@core/utils'
 import ProspectPanel from './components/ProspectPanel.jsx'
 import AssumptionsPanel from './components/AssumptionsPanel.jsx'
+import StepPanel from './components/StepPanel.jsx'
 import OutputPanel from './components/OutputPanel.jsx'
 
 export default function SessionView({ state, onChange, onBuildLeaveHehind }) {
   const { config, prospect } = state
   const [assumptionsOpen, setAssumptionsOpen] = useState(false)
+  const [activeStep, setActiveStep] = useState(0)
 
   const primary = config.brand?.primaryColor || '#1a8a80'
   const productName = config.productName || 'Our Product'
+  const useGroups = Boolean(config.inputGroups)
 
   function updateProspect(partial) {
     onChange({ ...state, prospect: { ...prospect, ...partial } })
@@ -33,17 +36,16 @@ export default function SessionView({ state, onChange, onBuildLeaveHehind }) {
     return vals
   }, [config, prospect.inputValues])
 
-  // Support both grouped (inputGroups) and flat (inputs) configs
-  const useGroups = Boolean(config.inputGroups)
+  // Build step list for grouped configs: profile + non-all-locked groups
+  const steps = useGroups ? [
+    { id: 'profile', label: 'Prospect Profile', isProfile: true },
+    ...(config.inputGroups.filter(g => g.inputs.some(i => i.sellerAccess !== 'locked'))),
+  ] : null
+
+  // Flat config support
   const flatInputs = getFlatInputs(config)
-  const visibleInputs = flatInputs.filter(i => useGroups
-    ? (i.sellerAccess || 'prospect') === 'prospect'
-    : i.visible !== false
-  )
-  const hiddenInputs = flatInputs.filter(i => useGroups
-    ? i.sellerAccess === 'se'
-    : i.visible === false
-  )
+  const visibleInputs = flatInputs.filter(i => i.visible !== false)
+  const hiddenInputs = flatInputs.filter(i => i.visible === false)
 
   return (
     <div className="session-layout">
@@ -69,24 +71,39 @@ export default function SessionView({ state, onChange, onBuildLeaveHehind }) {
 
       <div className="session-body">
         <aside className="session-left">
-          <ProspectPanel
-            prospect={prospect}
-            visibleInputs={visibleInputs}
-            inputGroups={useGroups ? config.inputGroups : null}
-            inputValues={inputValues()}
-            onProspectChange={updateProspect}
-            onInputChange={setInputValue}
-            primary={primary}
-          />
-          <AssumptionsPanel
-            hiddenInputs={hiddenInputs}
-            inputGroups={useGroups ? config.inputGroups : null}
-            inputValues={inputValues()}
-            onInputChange={setInputValue}
-            open={assumptionsOpen}
-            onToggle={() => setAssumptionsOpen(o => !o)}
-            primary={primary}
-          />
+          {useGroups ? (
+            <StepPanel
+              steps={steps}
+              activeStep={activeStep}
+              onStepChange={setActiveStep}
+              prospect={prospect}
+              inputValues={inputValues()}
+              onProspectChange={updateProspect}
+              onInputChange={setInputValue}
+              primary={primary}
+            />
+          ) : (
+            <>
+              <ProspectPanel
+                prospect={prospect}
+                visibleInputs={visibleInputs}
+                inputGroups={null}
+                inputValues={inputValues()}
+                onProspectChange={updateProspect}
+                onInputChange={setInputValue}
+                primary={primary}
+              />
+              <AssumptionsPanel
+                hiddenInputs={hiddenInputs}
+                inputGroups={null}
+                inputValues={inputValues()}
+                onInputChange={setInputValue}
+                open={assumptionsOpen}
+                onToggle={() => setAssumptionsOpen(o => !o)}
+                primary={primary}
+              />
+            </>
+          )}
         </aside>
 
         <main className="session-right">

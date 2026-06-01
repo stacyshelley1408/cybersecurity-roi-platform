@@ -86,7 +86,9 @@ const STEPS = [
 ]
 
 const LS_KEY = 'sales-builder-config-v2'
-const SELLER_TOOL_BASE = 'https://stacyshelley.com/seller-tool/'
+const SELLER_TOOL_BASE = import.meta.env.DEV
+  ? 'http://localhost:5180/seller-tool/'
+  : 'https://stacyshelley.com/seller-tool/'
 
 export default function App() {
   const [config, setConfig] = useState(() => {
