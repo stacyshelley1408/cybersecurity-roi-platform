@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { encodeConfig, decodeConfig } from '../encodeConfig'
-import { slugify } from '../utils'
+import { encodeConfig, decodeConfig } from '@core/encodeConfig'
+import { slugify } from '@core/utils'
 
 export default function EmbedCode({ config, loadConfig }) {
   const [copied, setCopied] = useState(false)

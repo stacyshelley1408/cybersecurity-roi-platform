@@ -1,4 +1,4 @@
-import { evalFormula, formatValue } from '../utils/formulaEngine.js'
+import { evalFormula, formatValue } from '@core/formulaEngine'
 
 export default function OutputPanel({ config, inputValues, prospect, primary }) {
   const productName = config.productName || 'Our Product'

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { slugify } from '../../utils'
+import { slugify } from '../utils.js'
 
 function newOutput() {
   return { id: '', label: '', formula: '', format: 'currency', highlight: false }

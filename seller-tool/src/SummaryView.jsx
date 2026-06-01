@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { evalFormula, formatValue } from './utils/formulaEngine.js'
+import { evalFormula, formatValue } from '@core/formulaEngine'
 import { exportPptx } from './utils/pptxExport.js'
 
 export default function SummaryView({ state, onEdit }) {

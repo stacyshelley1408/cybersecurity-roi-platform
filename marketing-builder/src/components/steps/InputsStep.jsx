@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { slugify } from '../../utils'
+import { slugify } from '@core/utils'
 
 function newInput() {
   return {

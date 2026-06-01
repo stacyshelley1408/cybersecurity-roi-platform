@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { encodeConfig } from '../encodeConfig'
+import { encodeConfig } from '@core/encodeConfig'
 
 let cachedScript = null
 

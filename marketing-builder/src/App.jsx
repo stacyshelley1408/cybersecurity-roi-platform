@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { version } from '../package.json'
 import './App.css'
-import StepNav from './components/StepNav'
+import StepNav from '@core/components/StepNav'
 import LivePreview from './components/LivePreview'
 import EmbedCode from './components/EmbedCode'
-import InfoStep from './components/steps/InfoStep'
-import BrandingStep from './components/steps/BrandingStep'
+import InfoStep from '@core/components/InfoStep'
+import BrandingStep from '@core/components/BrandingStep'
 import InputsStep from './components/steps/InputsStep'
-import OutputsStep from './components/steps/OutputsStep'
+import OutputsStep from '@core/components/OutputsStep'
 import CtaStep from './components/steps/CtaStep'
 
 export const DEFAULT_CONFIG = {
