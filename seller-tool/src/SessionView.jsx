@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { getFlatInputs } from '@core/utils'
 import ProspectPanel from './components/ProspectPanel.jsx'
 import AssumptionsPanel from './components/AssumptionsPanel.jsx'
 import OutputPanel from './components/OutputPanel.jsx'
@@ -24,17 +25,25 @@ export default function SessionView({ state, onChange, onBuildLeaveHehind }) {
     })
   }
 
-  // Resolved input values: explicit prospect entry wins, then config default
   const inputValues = useCallback(() => {
     const vals = {}
-    for (const inp of config.inputs || []) {
+    for (const inp of getFlatInputs(config)) {
       vals[inp.id] = prospect.inputValues?.[inp.id] ?? inp.default ?? 0
     }
     return vals
-  }, [config.inputs, prospect.inputValues])
+  }, [config, prospect.inputValues])
 
-  const visibleInputs = (config.inputs || []).filter(i => i.visible)
-  const hiddenInputs = (config.inputs || []).filter(i => !i.visible)
+  // Support both grouped (inputGroups) and flat (inputs) configs
+  const useGroups = Boolean(config.inputGroups)
+  const flatInputs = getFlatInputs(config)
+  const visibleInputs = flatInputs.filter(i => useGroups
+    ? (i.sellerAccess || 'prospect') === 'prospect'
+    : i.visible !== false
+  )
+  const hiddenInputs = flatInputs.filter(i => useGroups
+    ? i.sellerAccess === 'se'
+    : i.visible === false
+  )
 
   return (
     <div className="session-layout">
@@ -63,6 +72,7 @@ export default function SessionView({ state, onChange, onBuildLeaveHehind }) {
           <ProspectPanel
             prospect={prospect}
             visibleInputs={visibleInputs}
+            inputGroups={useGroups ? config.inputGroups : null}
             inputValues={inputValues()}
             onProspectChange={updateProspect}
             onInputChange={setInputValue}
@@ -70,6 +80,7 @@ export default function SessionView({ state, onChange, onBuildLeaveHehind }) {
           />
           <AssumptionsPanel
             hiddenInputs={hiddenInputs}
+            inputGroups={useGroups ? config.inputGroups : null}
             inputValues={inputValues()}
             onInputChange={setInputValue}
             open={assumptionsOpen}

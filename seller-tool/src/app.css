@@ -102,6 +102,20 @@ button, input, select, textarea { font-family: inherit; }
 }
 .panel-divider { height: 1px; background: var(--soft-gray); margin: 1rem 0; }
 
+.panel-group-heading {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent);
+  margin: 0 0 0.6rem;
+  padding-top: 0.25rem;
+}
+
+.assumptions-group-heading {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-muted);
+  margin: 0.75rem 0 0.5rem;
+}
+.assumptions-group-heading:first-child { margin-top: 0; }
+
 /* ── Form fields ─────────────────────────────────────────────────────────────── */
 .field-group { margin-bottom: 0.85rem; }
 .field-group:last-child { margin-bottom: 0; }
@@ -310,6 +324,13 @@ button, input, select, textarea { font-family: inherit; }
 .summary-description p { margin: 0; }
 
 .summary-assumptions { margin-bottom: 2rem; }
+.summary-input-group { margin-bottom: 1.25rem; }
+.summary-input-group-heading {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 0.5rem; padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border);
+}
 .summary-section-heading {
   font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--text-light); margin: 0 0 0.75rem;

@@ -1,5 +1,5 @@
 import PptxGenJS from 'pptxgenjs'
-import { evalFormula, formatValue } from './formulaEngine.js'
+import { evalFormula, formatValue } from '@core/formulaEngine'
 
 export function exportPptx({ config, prospect }) {
   const pptx = new PptxGenJS()

@@ -4,7 +4,7 @@ import StepNav from '@core/components/StepNav'
 import InfoStep from '@core/components/InfoStep'
 import BrandingStep from '@core/components/BrandingStep'
 import OutputsStep from '@core/components/OutputsStep'
-import InputsStep from './components/steps/InputsStep'
+import SessionFlow from './components/steps/SessionFlow'
 import SessionSetup from './components/steps/SessionSetup'
 import { encodeConfig } from '@core/encodeConfig'
 
@@ -18,27 +18,51 @@ export const DEFAULT_CONFIG = {
     fontFamily: 'DM Sans, system-ui, sans-serif',
     logoUrl: '',
   },
-  inputs: [
-    { id: 'employees', label: 'Number of Employees', type: 'range', default: 500, min: 10, max: 100000, step: 100, prefix: '', suffix: '', sellerAccess: 'prospect' },
-    { id: 'avg_salary', label: 'Average FTE Cost', type: 'number', default: 124910, min: 1, max: 500000, step: 1000, prefix: '$', suffix: '', sellerAccess: 'prospect' },
-    { id: 'hours_per_incident', label: 'Avg. Hours to Resolve Incident', type: 'range', default: 6, min: 1, max: 40, step: 1, prefix: '', suffix: '', sellerAccess: 'se' },
-    { id: 'escalation_rate', label: 'Incident-to-Breach Escalation Rate', type: 'number', default: 3, min: 0.1, max: 25, step: 0.5, prefix: '', suffix: '%', sellerAccess: 'se' },
-    { id: 'records_at_risk', label: 'Records / Accounts at Risk', type: 'number', default: 50000, min: 100, max: 100000000, step: 1000, prefix: '', suffix: '', sellerAccess: 'prospect' },
-    { id: 'cost_per_record', label: 'Cost per Record Exposed', type: 'number', default: 60, min: 1, max: 500, step: 5, prefix: '$', suffix: '', sellerAccess: 'se' },
-    { id: 'downtime_days', label: 'Expected Downtime (days)', type: 'range', default: 21, min: 1, max: 90, step: 1, prefix: '', suffix: '', sellerAccess: 'se' },
-    { id: 'daily_revenue', label: 'Daily Revenue', type: 'number', default: 25000, min: 0, max: 10000000, step: 1000, prefix: '$', suffix: '', sellerAccess: 'prospect' },
-    { id: 'ir_cost', label: 'Detection & Investigation Cost', type: 'number', default: 75000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', sellerAccess: 'se' },
-    { id: 'notification_legal_cost', label: 'Notification & Legal Cost', type: 'number', default: 50000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', sellerAccess: 'se' },
-    { id: 'customer_base', label: 'Total Customer Count', type: 'number', default: 2000, min: 0, max: 10000000, step: 100, prefix: '', suffix: '', sellerAccess: 'prospect' },
-    { id: 'post_breach_churn', label: 'Estimated Post-Breach Churn', type: 'number', default: 3, min: 0, max: 50, step: 1, prefix: '', suffix: '%', sellerAccess: 'se' },
-    { id: 'customer_ltv', label: 'Avg. Customer Lifetime Value', type: 'number', default: 15000, min: 0, max: 10000000, step: 500, prefix: '$', suffix: '', sellerAccess: 'se' },
-    { id: 'annual_audit_cost', label: 'Annual Compliance & Audit Costs', type: 'number', default: 175000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', sellerAccess: 'se' },
-    { id: 'fine_exposure', label: 'Annual Regulatory Fine Exposure', type: 'number', default: 400000, min: 0, max: 50000000, step: 10000, prefix: '$', suffix: '', sellerAccess: 'se' },
-    { id: 'incident_reduction', label: 'Incident Reduction', type: 'number', default: 70, min: 0, max: 100, step: 5, prefix: '', suffix: '%', sellerAccess: 'locked' },
-    { id: 'escalation_reduction', label: 'Escalation Rate Reduction', type: 'number', default: 50, min: 0, max: 100, step: 5, prefix: '', suffix: '%', sellerAccess: 'locked' },
-    { id: 'downtime_reduction', label: 'Downtime Reduction', type: 'number', default: 40, min: 0, max: 100, step: 5, prefix: '', suffix: '%', sellerAccess: 'locked' },
-    { id: 'compliance_reduction', label: 'Compliance Cost Reduction', type: 'number', default: 20, min: 0, max: 100, step: 5, prefix: '', suffix: '%', sellerAccess: 'locked' },
-    { id: 'product_cost', label: 'Annual Product Cost', type: 'number', default: 50000, min: 0, max: 10000000, step: 1000, prefix: '$', suffix: '', sellerAccess: 'locked' },
+  inputGroups: [
+    {
+      id: 'company_profile',
+      label: 'Company Profile',
+      inputs: [
+        { id: 'employees', label: 'Number of Employees', type: 'range', default: 500, min: 10, max: 100000, step: 100, prefix: '', suffix: '', sellerAccess: 'prospect' },
+        { id: 'avg_salary', label: 'Average FTE Cost', type: 'number', default: 124910, min: 1, max: 500000, step: 1000, prefix: '$', suffix: '', sellerAccess: 'prospect' },
+        { id: 'customer_base', label: 'Total Customer Count', type: 'number', default: 2000, min: 0, max: 10000000, step: 100, prefix: '', suffix: '', sellerAccess: 'prospect' },
+        { id: 'daily_revenue', label: 'Daily Revenue', type: 'number', default: 25000, min: 0, max: 10000000, step: 1000, prefix: '$', suffix: '', sellerAccess: 'prospect' },
+      ],
+    },
+    {
+      id: 'security_posture',
+      label: 'Security Posture',
+      inputs: [
+        { id: 'records_at_risk', label: 'Records / Accounts at Risk', type: 'number', default: 50000, min: 100, max: 100000000, step: 1000, prefix: '', suffix: '', sellerAccess: 'prospect' },
+        { id: 'hours_per_incident', label: 'Avg. Hours to Resolve Incident', type: 'range', default: 6, min: 1, max: 40, step: 1, prefix: '', suffix: '', sellerAccess: 'se' },
+        { id: 'escalation_rate', label: 'Incident-to-Breach Escalation Rate', type: 'number', default: 3, min: 0.1, max: 25, step: 0.5, prefix: '', suffix: '%', sellerAccess: 'se' },
+        { id: 'downtime_days', label: 'Expected Downtime (days)', type: 'range', default: 21, min: 1, max: 90, step: 1, prefix: '', suffix: '', sellerAccess: 'se' },
+      ],
+    },
+    {
+      id: 'financial_exposure',
+      label: 'Financial Exposure',
+      inputs: [
+        { id: 'cost_per_record', label: 'Cost per Record Exposed', type: 'number', default: 60, min: 1, max: 500, step: 5, prefix: '$', suffix: '', sellerAccess: 'se' },
+        { id: 'ir_cost', label: 'Detection & Investigation Cost', type: 'number', default: 75000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', sellerAccess: 'se' },
+        { id: 'notification_legal_cost', label: 'Notification & Legal Cost', type: 'number', default: 50000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', sellerAccess: 'se' },
+        { id: 'post_breach_churn', label: 'Estimated Post-Breach Churn', type: 'number', default: 3, min: 0, max: 50, step: 1, prefix: '', suffix: '%', sellerAccess: 'se' },
+        { id: 'customer_ltv', label: 'Avg. Customer Lifetime Value', type: 'number', default: 15000, min: 0, max: 10000000, step: 500, prefix: '$', suffix: '', sellerAccess: 'se' },
+        { id: 'annual_audit_cost', label: 'Annual Compliance & Audit Costs', type: 'number', default: 175000, min: 0, max: 5000000, step: 5000, prefix: '$', suffix: '', sellerAccess: 'se' },
+        { id: 'fine_exposure', label: 'Annual Regulatory Fine Exposure', type: 'number', default: 400000, min: 0, max: 50000000, step: 10000, prefix: '$', suffix: '', sellerAccess: 'se' },
+      ],
+    },
+    {
+      id: 'product_impact',
+      label: 'Product Impact',
+      inputs: [
+        { id: 'incident_reduction', label: 'Incident Reduction', type: 'number', default: 70, min: 0, max: 100, step: 5, prefix: '', suffix: '%', sellerAccess: 'locked' },
+        { id: 'escalation_reduction', label: 'Escalation Rate Reduction', type: 'number', default: 50, min: 0, max: 100, step: 5, prefix: '', suffix: '%', sellerAccess: 'locked' },
+        { id: 'downtime_reduction', label: 'Downtime Reduction', type: 'number', default: 40, min: 0, max: 100, step: 5, prefix: '', suffix: '%', sellerAccess: 'locked' },
+        { id: 'compliance_reduction', label: 'Compliance Cost Reduction', type: 'number', default: 20, min: 0, max: 100, step: 5, prefix: '', suffix: '%', sellerAccess: 'locked' },
+        { id: 'product_cost', label: 'Annual Product Cost', type: 'number', default: 50000, min: 0, max: 10000000, step: 1000, prefix: '$', suffix: '', sellerAccess: 'locked' },
+      ],
+    },
   ],
   outputs: [
     { id: 'security_incidents', label: 'Estimated Security Incidents / Year', formula: 'Math.round(Math.sqrt(employees * Math.min(employees, 500)) * 0.12)', format: 'number', highlight: false },
@@ -54,14 +78,14 @@ export const DEFAULT_CONFIG = {
 }
 
 const STEPS = [
-  { id: 'info', label: 'Template Info' },
-  { id: 'branding', label: 'Branding' },
-  { id: 'inputs', label: 'Input Fields' },
-  { id: 'outputs', label: 'Outputs & Formulas' },
-  { id: 'session', label: 'Session Setup' },
+  { id: 'info',       label: 'Template Info',       section: 'Build the Model' },
+  { id: 'branding',   label: 'Branding' },
+  { id: 'outputs',    label: 'Outputs & Formulas' },
+  { id: 'flow',       label: 'Session Flow',         section: 'Configure Walkthrough' },
+  { id: 'leavebehind', label: 'Leave-Behind',        section: 'Leave-Behind' },
 ]
 
-const LS_KEY = 'sales-builder-config'
+const LS_KEY = 'sales-builder-config-v2'
 const SELLER_TOOL_BASE = 'https://stacyshelley.com/seller-tool/'
 
 export default function App() {
@@ -86,8 +110,8 @@ export default function App() {
     setConfig(c => ({ ...c, brand: { ...c.brand, ...partial } }))
   }
 
-  function setInputs(inputs) {
-    setConfig(c => ({ ...c, inputs }))
+  function setInputGroups(inputGroups) {
+    setConfig(c => ({ ...c, inputGroups }))
   }
 
   function setOutputs(outputs) {
@@ -95,27 +119,36 @@ export default function App() {
   }
 
   const sessionUrl = SELLER_TOOL_BASE + '#config/' + encodeConfig(config)
-  const stepProps = { config, update, updateBrand, setInputs, setOutputs, sessionUrl }
+  const stepProps = { config, update, updateBrand, setInputGroups, setOutputs, sessionUrl }
 
   return (
     <div className="app">
       <header className="app-header">
         <div className="app-header-logo">
           <div className="logo-icon">🤝</div>
-          Sales ROI Builder
+          ROI Calculator Builder for Sales
         </div>
         <div className="app-header-badge">Beta</div>
+        <div className="app-header-spacer" />
+        <a
+          className="preview-session-btn"
+          href={sessionUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Preview Session ↗
+        </a>
       </header>
 
       <div className="app-body">
         <StepNav steps={STEPS} active={step} onChange={setStep} />
 
         <main className="center">
-          {step === 'info' && <InfoStep {...stepProps} />}
-          {step === 'branding' && <BrandingStep {...stepProps} />}
-          {step === 'inputs' && <InputsStep {...stepProps} />}
-          {step === 'outputs' && <OutputsStep {...stepProps} />}
-          {step === 'session' && <SessionSetup {...stepProps} />}
+          {step === 'info'        && <InfoStep {...stepProps} />}
+          {step === 'branding'    && <BrandingStep {...stepProps} />}
+          {step === 'outputs'     && <OutputsStep {...stepProps} />}
+          {step === 'flow'        && <SessionFlow {...stepProps} />}
+          {step === 'leavebehind' && <SessionSetup {...stepProps} />}
         </main>
       </div>
     </div>

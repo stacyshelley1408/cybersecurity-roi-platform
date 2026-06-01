@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { evalFormula, formatValue } from '@core/formulaEngine'
+import { getFlatInputs } from '@core/utils'
 import { exportPptx } from './utils/pptxExport.js'
 
 export default function SummaryView({ state, onEdit }) {
@@ -12,7 +13,7 @@ export default function SummaryView({ state, onEdit }) {
   const company = prospect.companyName || 'Prospect'
 
   const inputValues = {}
-  for (const inp of config.inputs || []) {
+  for (const inp of getFlatInputs(config)) {
     inputValues[inp.id] = prospect.inputValues?.[inp.id] ?? inp.default ?? 0
   }
 
@@ -109,20 +110,46 @@ export default function SummaryView({ state, onEdit }) {
 
         <section className="summary-assumptions">
           <h3 className="summary-section-heading">Model Inputs</h3>
-          <div className="summary-inputs-grid">
-            {(config.inputs || []).map(inp => {
-              const val = inputValues[inp.id]
-              const display = inp.prefix
-                ? `${inp.prefix}${Number(val).toLocaleString()}${inp.suffix || ''}`
-                : `${Number(val).toLocaleString()}${inp.suffix || ''}`
+          {config.inputGroups ? (
+            config.inputGroups.map(group => {
+              const visible = group.inputs.filter(i => i.sellerAccess !== 'locked')
+              if (visible.length === 0) return null
               return (
-                <div key={inp.id} className="summary-input-row">
-                  <span className="summary-input-label">{inp.label}</span>
-                  <span className="summary-input-val">{display}</span>
+                <div key={group.id} className="summary-input-group">
+                  <div className="summary-input-group-heading">{group.label}</div>
+                  <div className="summary-inputs-grid">
+                    {visible.map(inp => {
+                      const val = inputValues[inp.id]
+                      const display = inp.prefix
+                        ? `${inp.prefix}${Number(val).toLocaleString()}${inp.suffix || ''}`
+                        : `${Number(val).toLocaleString()}${inp.suffix || ''}`
+                      return (
+                        <div key={inp.id} className="summary-input-row">
+                          <span className="summary-input-label">{inp.label}</span>
+                          <span className="summary-input-val">{display}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
               )
-            })}
-          </div>
+            })
+          ) : (
+            <div className="summary-inputs-grid">
+              {getFlatInputs(config).map(inp => {
+                const val = inputValues[inp.id]
+                const display = inp.prefix
+                  ? `${inp.prefix}${Number(val).toLocaleString()}${inp.suffix || ''}`
+                  : `${Number(val).toLocaleString()}${inp.suffix || ''}`
+                return (
+                  <div key={inp.id} className="summary-input-row">
+                    <span className="summary-input-label">{inp.label}</span>
+                    <span className="summary-input-val">{display}</span>
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </section>
 
         <footer className="summary-footer">

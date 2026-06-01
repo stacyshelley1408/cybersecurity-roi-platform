@@ -1,8 +1,8 @@
 import InputField from './InputField.jsx'
 
 export default function ProspectPanel({
-  prospect, visibleInputs, inputValues,
-  onProspectChange, onInputChange, primary,
+  prospect, visibleInputs, inputGroups,
+  inputValues, onProspectChange, onInputChange, primary,
 }) {
   return (
     <div className="panel prospect-panel">
@@ -42,20 +42,44 @@ export default function ProspectPanel({
         </div>
       </div>
 
-      {visibleInputs.length > 0 && (
-        <>
-          <div className="panel-divider" />
-          <h3 className="panel-subheading">Prospect Data</h3>
-          {visibleInputs.map(inp => (
-            <InputField
-              key={inp.id}
-              inp={inp}
-              value={inputValues[inp.id]}
-              onChange={val => onInputChange(inp.id, val)}
-              primary={primary}
-            />
-          ))}
-        </>
+      {inputGroups ? (
+        // Grouped rendering — show group headers, only groups with prospect inputs
+        inputGroups.map(group => {
+          const groupInputs = group.inputs.filter(i => (i.sellerAccess || 'prospect') === 'prospect')
+          if (groupInputs.length === 0) return null
+          return (
+            <div key={group.id}>
+              <div className="panel-divider" />
+              <h3 className="panel-group-heading">{group.label}</h3>
+              {groupInputs.map(inp => (
+                <InputField
+                  key={inp.id}
+                  inp={inp}
+                  value={inputValues[inp.id]}
+                  onChange={val => onInputChange(inp.id, val)}
+                  primary={primary}
+                />
+              ))}
+            </div>
+          )
+        })
+      ) : (
+        // Flat rendering — legacy marketing configs
+        visibleInputs.length > 0 && (
+          <>
+            <div className="panel-divider" />
+            <h3 className="panel-subheading">Prospect Data</h3>
+            {visibleInputs.map(inp => (
+              <InputField
+                key={inp.id}
+                inp={inp}
+                value={inputValues[inp.id]}
+                onChange={val => onInputChange(inp.id, val)}
+                primary={primary}
+              />
+            ))}
+          </>
+        )
       )}
     </div>
   )

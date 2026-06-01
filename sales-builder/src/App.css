@@ -60,6 +60,23 @@ html, body, #root {
   flex-shrink: 0;
 }
 
+.app-header-spacer { flex: 1; }
+
+.preview-session-btn {
+  padding: 6px 14px;
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--warm-white);
+  background: var(--accent);
+  text-decoration: none;
+  transition: background .15s;
+  white-space: nowrap;
+}
+
+.preview-session-btn:hover { background: #157a71; }
+
 .app-header-badge {
   font-size: .62rem;
   font-weight: 500;
@@ -134,7 +151,6 @@ html, body, #root {
   overflow-y: auto;
   padding: 28px 40px;
   background: var(--warm-white);
-  max-width: 780px;
 }
 
 .step-header { margin-bottom: 24px; }
@@ -268,6 +284,94 @@ html, body, #root {
 .empty-state-icon { font-size: 2rem; margin-bottom: 8px; }
 .section-divider { height: 1px; background: var(--border); margin: 20px 0; }
 .highlight-badge { font-size: .62rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; background: rgba(26,138,128,0.09); color: var(--accent); padding: 1px 7px; border: 1px solid rgba(26,138,128,0.25); margin-left: 6px; }
+
+/* ── sales-specific: input groups ── */
+.input-group-card {
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+  background: #fff;
+}
+
+.input-group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--slate);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.group-name-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--warm-white);
+  font-family: var(--sans);
+  letter-spacing: 0.01em;
+  min-width: 0;
+}
+
+.group-name-input::placeholder { color: rgba(255,255,255,0.3); }
+
+.group-count {
+  font-size: .68rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.08);
+  padding: 1px 7px;
+  flex-shrink: 0;
+}
+
+.group-actions { display: flex; gap: 2px; flex-shrink: 0; }
+.group-actions .icon-btn { color: rgba(255,255,255,0.4); }
+.group-actions .icon-btn:hover { background: rgba(255,255,255,0.1); color: var(--warm-white); }
+.group-actions .icon-btn.danger:hover { background: rgba(239,68,68,0.25); color: #fca5a5; }
+
+.group-inputs {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.group-empty {
+  font-size: .78rem;
+  color: var(--text-light);
+  padding: 10px 6px;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.add-input-in-group-btn {
+  display: flex;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px dashed var(--border);
+  background: none;
+  cursor: pointer;
+  color: var(--text-light);
+  font-size: .78rem;
+  font-weight: 300;
+  width: 100%;
+  transition: border-color .15s, color .15s;
+  margin-top: 2px;
+}
+
+.add-input-in-group-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.move-to-select {
+  padding: 2px 4px;
+  font-size: .68rem;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-muted);
+  cursor: pointer;
+  outline: none;
+  max-width: 100px;
+}
 
 /* ── sales-specific: access badges ── */
 .access-legend {
