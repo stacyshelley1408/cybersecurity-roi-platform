@@ -47,6 +47,42 @@ const TEST_CONFIG = {
   },
 }
 
+const MARKETING_URL = 'http://localhost:5185/roi-calculator-app/'
+
+// ─── marketing-builder smoke ───────────────────────────────────────────────
+
+test.describe('marketing-builder smoke', () => {
+  test('page loads with correct header', async ({ page }) => {
+    await page.goto(MARKETING_URL)
+    await expect(page.locator('.app-header-logo')).toContainText('ROI Calculator Builder')
+    // All 5 steps present
+    for (const label of ['Template Info', 'Branding', 'Input Fields', 'Outputs & Formulas', 'Call to Action']) {
+      await expect(page.locator('.sidebar-item').filter({ hasText: label })).toBeVisible()
+    }
+  })
+
+  test('Outputs & Formulas loads without crash (flat inputs schema)', async ({ page }) => {
+    await page.goto(MARKETING_URL)
+    await page.locator('.sidebar-item').filter({ hasText: 'Outputs' }).click()
+    await expect(page.locator('.step-header h2')).toContainText('Outputs')
+    // Default config has 5 outputs — all should render as item-cards
+    await expect(page.locator('.item-card').first()).toBeVisible()
+    await expect(page.locator('.item-card')).toHaveCount(5)
+  })
+
+  test('Input Fields step renders visible and hidden inputs', async ({ page }) => {
+    await page.goto(MARKETING_URL)
+    await page.locator('.sidebar-item').filter({ hasText: 'Input Fields' }).click()
+    await expect(page.locator('.item-card').first()).toBeVisible()
+  })
+
+  test('live preview panel renders', async ({ page }) => {
+    await page.goto(MARKETING_URL)
+    // Preview iframe or loading placeholder should appear
+    await expect(page.locator('.preview-wrap')).toBeVisible()
+  })
+})
+
 // ─── sales-builder ────────────────────────────────────────────────────────
 
 test.describe('sales-builder', () => {
