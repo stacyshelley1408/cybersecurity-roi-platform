@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { evalFormula, formatValue } from '@core/formulaEngine'
-import { getFlatInputs } from '@core/utils'
+import { getFlatInputs, safeUrl } from '@core/utils'
 import { exportPptx } from './utils/pptxExport.js'
 
 export default function SummaryView({ state, onEdit }) {
@@ -59,7 +59,7 @@ export default function SummaryView({ state, onEdit }) {
         <header className="summary-header" style={{ borderTopColor: primary }}>
           <div className="summary-header-text">
             {config.brand?.logoUrl && (
-              <img src={config.brand.logoUrl} alt={productName} className="summary-logo" />
+              <img src={safeUrl(config.brand.logoUrl)} alt={productName} className="summary-logo" />
             )}
             <div>
               <div className="summary-product" style={{ color: primary }}>{productName}</div>
@@ -174,7 +174,7 @@ export default function SummaryView({ state, onEdit }) {
             )}
           </div>
           {config.brand?.logoUrl && (
-            <img src={config.brand.logoUrl} alt={productName} className="summary-footer-logo" />
+            <img src={safeUrl(config.brand.logoUrl)} alt={productName} className="summary-footer-logo" />
           )}
         </footer>
       </div>

@@ -9,5 +9,6 @@ export default defineConfig({
     alias: {
       '@core': path.resolve(__dirname, '../core'),
     },
+    dedupe: ['react', 'react-dom'],
   },
 })

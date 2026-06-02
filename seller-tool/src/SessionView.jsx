@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react'
-import { getFlatInputs } from '@core/utils'
+import { getFlatInputs, safeUrl } from '@core/utils'
 import ProspectPanel from './components/ProspectPanel.jsx'
 import AssumptionsPanel from './components/AssumptionsPanel.jsx'
 import StepPanel from './components/StepPanel.jsx'
 import OutputPanel from './components/OutputPanel.jsx'
 
-export default function SessionView({ state, onChange, onBuildLeaveHehind: onBuildLeaveBehind }) {
+export default function SessionView({ state, onChange, onBuildLeaveBehind }) {
   const { config, prospect } = state
   const [assumptionsOpen, setAssumptionsOpen] = useState(false)
   const [activeStep, setActiveStep] = useState(0)
@@ -42,17 +42,12 @@ export default function SessionView({ state, onChange, onBuildLeaveHehind: onBui
     ...(config.inputGroups.filter(g => g.inputs.some(i => i.sellerAccess !== 'locked'))),
   ] : null
 
-  // Flat config support
-  const flatInputs = getFlatInputs(config)
-  const visibleInputs = flatInputs.filter(i => i.visible !== false)
-  const hiddenInputs = flatInputs.filter(i => i.visible === false)
-
   return (
     <div className="session-layout">
       <header className="session-header" style={{ borderBottomColor: primary }}>
         <div className="session-header-left">
           {config.brand?.logoUrl && (
-            <img src={config.brand.logoUrl} alt="" className="session-logo" />
+            <img src={safeUrl(config.brand.logoUrl)} alt="" className="session-logo" />
           )}
           <span className="session-product">{productName}</span>
           <span className="session-divider">·</span>
@@ -87,7 +82,7 @@ export default function SessionView({ state, onChange, onBuildLeaveHehind: onBui
             <>
               <ProspectPanel
                 prospect={prospect}
-                visibleInputs={visibleInputs}
+                visibleInputs={getFlatInputs(config).filter(i => i.visible !== false)}
                 inputGroups={null}
                 inputValues={inputValues()}
                 onProspectChange={updateProspect}
@@ -95,7 +90,7 @@ export default function SessionView({ state, onChange, onBuildLeaveHehind: onBui
                 primary={primary}
               />
               <AssumptionsPanel
-                hiddenInputs={hiddenInputs}
+                hiddenInputs={getFlatInputs(config).filter(i => i.visible === false)}
                 inputGroups={null}
                 inputValues={inputValues()}
                 onInputChange={setInputValue}

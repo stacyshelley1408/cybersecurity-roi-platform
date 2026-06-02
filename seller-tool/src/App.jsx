@@ -37,7 +37,7 @@ export default function App() {
   }
 
   if (parsed.view === 'session') {
-    return <SessionView state={parsed.state} onChange={updateState} onBuildLeaveHehind={goToSummary} />
+    return <SessionView state={parsed.state} onChange={updateState} onBuildLeaveBehind={goToSummary} />
   }
 
   // Empty state — no template loaded

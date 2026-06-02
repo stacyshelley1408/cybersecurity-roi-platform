@@ -9,3 +9,13 @@ export function getFlatInputs(config) {
   }
   return config.inputs || []
 }
+
+// Validates a URL to http/https only; returns '#' for anything else
+export function safeUrl(url) {
+  try {
+    const u = new URL(String(url))
+    return u.protocol === 'http:' || u.protocol === 'https:' ? url : '#'
+  } catch (_) {
+    return '#'
+  }
+}
